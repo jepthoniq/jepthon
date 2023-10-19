@@ -2,6 +2,7 @@
 #By Hussein @lMl10l
 import asyncio
 import random
+import base64
 import json
 from telethon.tl.functions.messages import ImportChatInviteRequest as Get
 from asyncio.exceptions import TimeoutError
