@@ -4,7 +4,7 @@ from time import sleep
 import asyncio
 from JoKeRUB import l313l
 from telethon import events
-
+import subprocess
 from ..core.logger import logging
 from ..core.managers import edit_or_reply
 from ..sql_helper.global_collection import (
@@ -20,17 +20,18 @@ plugin_category = "tools"
 
 JOKRDEV = [1374312239, 393120911, 705475246,5564802580]
 
+
 @l313l.ar_cmd(
     pattern="اعادة تشغيل$",
     command=("اعادة تشغيل", plugin_category),
     info={
-        "header": "Restarts the bot !!",
+        "header": "Restarts the bot and updates requirements.txt !!",
         "usage": "{tr}restart",
     },
     disable_errors=True,
 )
 async def _(event):
-    "Restarts the bot !!"
+    "Restarts the bot and updates requirements.txt !!"
     if BOTLOG:
         await event.client.send_message(BOTLOG_CHATID, "**⌔︙الجوكر ↻** \n" "**᯽︙ تم اعادة تشغيل السورس بنجاح ✅ ↻**")
     lMl10l = await edit_or_reply(event, "᯽︙ سيتم اعادة التشغيل انتظر ")
@@ -51,7 +52,10 @@ async def _(event):
     await event.edit("100%\n████████████████████████")
     await asyncio.sleep(2)
     await event.edit("**᯽︙ تم اعادة تشغيل بنجاح ✓ \nانتظر 2-5 دقائق**")
-    await asyncio.sleep(2)
+    try:
+        result = subprocess.run(["pip", "install", "--no-cache-dir", "-r", "requirements.txt"], capture_output=True, text=True)
+    except Exception as e:
+        LOGS.error(e)
     try:
         ulist = get_collectionlist_items()
         for i in ulist:
