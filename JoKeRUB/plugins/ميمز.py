@@ -554,6 +554,7 @@ async def jepmeme(memejep):
   await memejep.delete()
 
 
+
 try:
     with open('aljoker_links.json', 'r') as file:
         aljoker_links = json.load(file)
@@ -606,6 +607,7 @@ async def delete_aljoker(event):
         await event.client(joker)
     except BaseException:
         pass
+
 @l313l.on(admin_cmd(outgoing=True, pattern="قائمة الميمز"))
 async def list_aljoker(event):
     if aljoker_links:
@@ -621,7 +623,7 @@ async def list_aljoker(event):
         await event.client(joker)
     except BaseException:
         pass
-    
+
 @l313l.on(admin_cmd(outgoing=True, pattern="ازالة_البصمات"))
 async def delete_all_aljoker(event):
     global aljoker_links
