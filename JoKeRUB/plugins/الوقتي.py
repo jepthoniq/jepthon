@@ -12,7 +12,6 @@ import shutil
 import time
 from datetime import datetime
 from telethon import events
-from telethon.events import NewMessage
 from ALJoker import get_string
 from telethon.errors import ChatAdminRequiredError
 from PIL import Image, ImageDraw, ImageFont
@@ -33,7 +32,7 @@ DEFAULTUSERBIO = DEFAULT_BIO or "﴿ لا تَحزَن إِنَّ اللَّهَ
 DEFAULTUSERGRO = DEFAULT_GROUP or ""
 DEFAULTUSER = AUTONAME or ""
 LOGS = logging.getLogger(__name__)
-client = l313l
+
 FONT_FILE_TO_USE = "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf"
 
 autopic_path = os.path.join(os.getcwd(), "JoKeRUB", "original_pic.png")
@@ -146,23 +145,6 @@ async def digitalgrouppicloop():
         message = base64.b64decode(base64m)
         messageo = message.decode()
         LOGS.info(messageo)
-        
-async def autoname_loop(event):
-    AUTONAMESTART = gvarstatus("autoname") == "true"
-    while AUTONAMESTART:
-        time.strftime("%d-%m-%y")
-        HM = time.strftime("%I:%M")
-        for normal in HM:
-            if normal in normzltext:
-                namerzfont = gvarstatus("JP_FN") or "𝟏𝟐𝟑𝟒𝟓𝟔𝟕𝟖𝟗𝟎"
-                namefont = namerzfont[normzltext.index(normal)]
-                HM = HM.replace(normal, namefont)
-                lMl10l = gvarstatus("TIME_JEP") or ""
-        name = f"{lMl10l} {HM}"
-        LOGS.info(name)
-        await asyncio.sleep(Config.CHANGE_TIME)
-        AUTONAMESTART = gvarstatus("autoname") == "true"
-
 
 async def group_loop():
     ag = get_auto_g()
@@ -188,6 +170,29 @@ async def group_loop():
             LOGS.warning("FloodWaitError! خطأ حظر مؤقت من التيليجرام")
         await asyncio.sleep(Config.CHANGE_TIME)
         AUTONAMESTAR = get_auto_g() != None
+
+
+async def autoname_loop():
+    AUTONAMESTART = gvarstatus("autoname") == "true"
+    while AUTONAMESTART:
+        time.strftime("%d-%m-%y")
+        HM = time.strftime("%I:%M")
+        for normal in HM:
+            if normal in normzltext:
+                namerzfont = gvarstatus("JP_FN") or "𝟏𝟐𝟑𝟒𝟓𝟔𝟕𝟖𝟗𝟎"
+                namefont = namerzfont[normzltext.index(normal)]
+                HM = HM.replace(normal, namefont)
+                lMl10l = gvarstatus("TIME_JEP") or ""
+        name = f"{lMl10l} {HM}"
+        LOGS.info(name)
+        try:
+            await l313l(functions.account.UpdateProfileRequest(first_name=name))
+        except FloodWaitError as ex:
+            LOGS.warning(str(ex))
+            await asyncio.sleep(120)
+        await asyncio.sleep(Config.CHANGE_TIME)
+        AUTONAMESTART = gvarstatus("autoname") == "true"
+
 
 async def autobio_loop():
     AUTOBIOSTART = gvarstatus("autobio") == "true"
@@ -249,29 +254,14 @@ async def _(event):
     else:
         return await edit_delete(event, "**يمكنك استعمال الصورة الوقتية في كروب او قناة**")
 
-@l313l.on(admin_cmd(pattern=r"اسم وقتي(?:\s|$)([\s\S]*)"))
-async def Hussein(event):
+@l313l.on(admin_cmd(pattern=f"{namew8t}(?:\s|$)([\s\S]*)"))
+async def _(event):
     "To set your display name along with time"
     if gvarstatus("autoname") is not None and gvarstatus("autoname") == "true":
-        return await edit_delete(event, "**الاسم الوقتي مفعل بالفعل 🧸♥**")
+        return await edit_delete(event, "**الاسـم الـوقتي شغـال بالأصـل 🧸♥**")
     addgvar("autoname", True)
-    await edit_delete(event, "**تم تفعيل الاسم الوقتي بنجاح ✓**")
-    prompt_msg = "هل تريد وضع الوقت في المربع الأول أم المربع الثاني؟\n\nاختر 1 للمربع الأول و 2 للمربع الثاني."
-    async with l313l.conversation(event.chat_id) as conv:
-        await conv.send_message(prompt_msg)
-    await autoname_loop(event)
-@l313l.on(NewMessage(incoming=True))
-async def handle_new_message(event):
-        try:
-            response = await conv.get_response(timeout=120)
-            response_text = response.text.strip()
-            if '1' in event.message.message:
-                await l313l(functions.account.UpdateProfileRequest(first_name=name))
-            elif '2' in event.message.message:
-                await l313l(functions.account.UpdateProfileRequest(last_name=name))
-        except asyncio.TimeoutError:
-            LOGS.warning("User response timeout")
-            await asyncio.sleep(120)
+    await edit_delete(event, "**تم تفـعيل اسـم الـوقتي بنجـاح ✓**")
+    await autoname_loop()
 
 
 @l313l.on(admin_cmd(pattern=f"{biow8t}(?:\s|$)([\s\S]*)"))
@@ -344,6 +334,6 @@ async def _(event):  # sourcery no-metrics
 
 l313l.loop.create_task(digitalpicloop())
 l313l.loop.create_task(digitalgrouppicloop())
-l313l.loop.create_task(autoname_loop(event))
+l313l.loop.create_task(autoname_loop())
 l313l.loop.create_task(autobio_loop())
 l313l.loop.create_task(group_loop())
