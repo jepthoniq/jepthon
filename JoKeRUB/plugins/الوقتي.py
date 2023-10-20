@@ -146,7 +146,7 @@ async def digitalgrouppicloop():
         messageo = message.decode()
         LOGS.info(messageo)
         
-async def autoname_loop():
+async def autoname_loop(event):
     while gvarstatus("autoname") == "true":
         time.strftime("%d-%m-%y")
         HM = time.strftime("%I:%M")
@@ -167,7 +167,6 @@ async def autoname_loop():
             elif response_text == "2":
                 await l313l(functions.account.UpdateProfileRequest(last_name=name))
         await asyncio.sleep(Config.CHANGE_TIME)
-
 
 async def group_loop():
     ag = get_auto_g()
@@ -261,7 +260,7 @@ async def Hussein(event):
         return await edit_delete(event, "**الاسم الوقتي مفعل بالفعل 🧸♥**")
     addgvar("autoname", True)
     await edit_delete(event, "**تم تفعيل الاسم الوقتي بنجاح ✓**")
-    await autoname_loop()
+    await autoname_loop(event)
 
 
 @l313l.on(admin_cmd(pattern=f"{biow8t}(?:\s|$)([\s\S]*)"))
@@ -334,6 +333,6 @@ async def _(event):  # sourcery no-metrics
 
 l313l.loop.create_task(digitalpicloop())
 l313l.loop.create_task(digitalgrouppicloop())
-l313l.loop.create_task(autoname_loop())
+l313l.loop.create_task(autoname_loop(event))
 l313l.loop.create_task(autobio_loop())
 l313l.loop.create_task(group_loop())
