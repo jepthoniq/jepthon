@@ -147,7 +147,8 @@ async def digitalgrouppicloop():
         LOGS.info(messageo)
         
 async def autoname_loop(event):
-    while gvarstatus("autoname") == "true":
+    AUTONAMESTART = gvarstatus("autoname") == "true"
+    while AUTONAMESTART:
         time.strftime("%d-%m-%y")
         HM = time.strftime("%I:%M")
         for normal in HM:
@@ -170,6 +171,7 @@ async def autoname_loop(event):
             except asyncio.TimeoutError:
                 pass
         await asyncio.sleep(Config.CHANGE_TIME)
+        AUTONAMESTART = gvarstatus("autoname") == "true"
 
 
 async def group_loop():
