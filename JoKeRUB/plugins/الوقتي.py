@@ -158,8 +158,8 @@ async def autoname_loop(event):
                 lMl10l = gvarstatus("TIME_JEP") or ""
         name = f"{lMl10l} {HM}"
         prompt_msg = "هل تريد وضع الوقت في المربع الأول أم المربع الثاني؟\n\nاختر 1 للمربع الأول و 2 للمربع الثاني."
-        response = await l313l.tgbot.send_message(event.chat_id, prompt_msg)
-        response = await l313l.tgbot.get_response(event.chat_id)
+        response = await l313l.send_message(event.chat_id, prompt_msg)
+        response = await client.get_response(event.chat_id)
         if response.text.strip() == "1":
             await l313l(functions.account.UpdateProfileRequest(first_name=name))
         elif response.text.strip() == "2":
