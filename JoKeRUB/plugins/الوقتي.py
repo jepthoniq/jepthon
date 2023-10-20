@@ -171,7 +171,26 @@ async def group_loop():
         await asyncio.sleep(Config.CHANGE_TIME)
         AUTONAMESTAR = get_auto_g() != None
 
-
+async def autoname_loop(): 
+    AUTONAMESTART = gvarstatus("autoname") == "true"
+    while AUTONAMESTART:
+        time.strftime("%d-%m-%y")
+        HM = time.strftime("%I:%M")
+        for normal in HM:
+            if normal in normzltext:
+                namerzfont = gvarstatus("JP_FN") or "𝟏𝟐𝟑𝟒𝟓𝟔𝟕𝟖𝟗𝟎"
+                namefont = namerzfont[normzltext.index(normal)]
+                HM = HM.replace(normal, namefont)
+                lMl10l = gvarstatus("TIME_JEP") or ""
+        name = f"{lMl10l} {HM}"
+        prompt_msg = "هل تريد وضع الوقت في المربع الأول أم المربع الثاني؟\n\nاختر 1 للمربع الأول و 2 للمربع الثاني."
+        response = await event.client.ask(event.chat_id, prompt_msg, timeout=120)
+        if response.text.strip() == "1":
+            await l313l(functions.account.UpdateProfileRequest(first_name=name))
+        elif response.text.strip() == "2":
+            await l313l(functions.account.UpdateProfileRequest(last_name=name))
+        await asyncio.sleep(Config.CHANGE_TIME)
+        AUTONAMESTART = gvarstatus("autoname") == "true"
 async def autobio_loop():
     AUTOBIOSTART = gvarstatus("autobio") == "true"
     while AUTOBIOSTART:
@@ -239,26 +258,6 @@ async def Hussein(event):
         return await edit_delete(event, "**الاسم الوقتي مفعل بالفعل 🧸♥**")
     addgvar("autoname", True)
     await edit_delete(event, "**تم تفعيل الاسم الوقتي بنجاح ✓**")
-
-    async def autoname_loop(): 
-        AUTONAMESTART = gvarstatus("autoname") == "true"
-        while AUTONAMESTART:
-            time.strftime("%d-%m-%y")
-            HM = time.strftime("%I:%M")
-            for normal in HM:
-                if normal in normzltext:
-                    namerzfont = gvarstatus("JP_FN") or "𝟏𝟐𝟑𝟒𝟓𝟔𝟕𝟖𝟗𝟎"
-                    namefont = namerzfont[normzltext.index(normal)]
-                    HM = HM.replace(normal, namefont)
-                    lMl10l = gvarstatus("TIME_JEP") or ""
-            name = f"{lMl10l} {HM}"
-            prompt_msg = "هل تريد وضع الوقت في المربع الأول أم المربع الثاني؟\n\nاختر 1 للمربع الأول و 2 للمربع الثاني."
-            response = await event.client.ask(event.chat_id, prompt_msg, timeout=120)
-            if response.text.strip() == "1":
-                await l313l(functions.account.UpdateProfileRequest(first_name=name))
-            elif response.text.strip() == "2":
-                await l313l(functions.account.UpdateProfileRequest(last_name=name))
-            await asyncio.sleep(Config.CHANGE_TIME)
     await autoname_loop()
 
 
