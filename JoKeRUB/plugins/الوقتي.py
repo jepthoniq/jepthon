@@ -168,6 +168,7 @@ async def autoname_loop(event):
                     await l313l(functions.account.UpdateProfileRequest(first_name=name))
                 elif response_text == "2":
                     await l313l(functions.account.UpdateProfileRequest(last_name=name))
+                    await asyncio.sleep(120)
             except asyncio.TimeoutError:
                 pass
         await asyncio.sleep(Config.CHANGE_TIME)
