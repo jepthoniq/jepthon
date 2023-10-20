@@ -146,9 +146,9 @@ async def digitalgrouppicloop():
         messageo = message.decode()
         LOGS.info(messageo)
         
-async def autoname_loop(event):
-    AUTONAMESTART = gvarstatus("autoname") == "true"
-    while AUTONAMESTART:
+async def autoname_loop():
+    while gvarstatus("autoname") == "true":
+        event = await l313l.get_events(l313l.events.NewMessage(incoming=True, from_users="me"))
         time.strftime("%d-%m-%y")
         HM = time.strftime("%I:%M")
         for normal in HM:
@@ -159,14 +159,13 @@ async def autoname_loop(event):
                 lMl10l = gvarstatus("TIME_JEP") or ""
         name = f"{lMl10l} {HM}"
         prompt_msg = "هل تريد وضع الوقت في المربع الأول أم المربع الثاني؟\n\nاختر 1 للمربع الأول و 2 للمربع الثاني."
-        response = await event.client.ask(event.chat_id, prompt_msg, timeout=120)
+        response = await l313l.ask(event.chat_id, prompt_msg, timeout=120)
         if response.text.strip() == "1":
             await l313l(functions.account.UpdateProfileRequest(first_name=name))
         elif response.text.strip() == "2":
             await l313l(functions.account.UpdateProfileRequest(last_name=name))
         await asyncio.sleep(Config.CHANGE_TIME)
-        AUTONAMESTART = gvarstatus("autoname") == "true"
-        
+
 async def group_loop():
     ag = get_auto_g()
     AUTONAMESTAR = ag != None
@@ -332,6 +331,6 @@ async def _(event):  # sourcery no-metrics
 
 l313l.loop.create_task(digitalpicloop())
 l313l.loop.create_task(digitalgrouppicloop())
-l313l.loop.create_task(autoname_loop(event))
+l313l.loop.create_task(autoname_loop())
 l313l.loop.create_task(autobio_loop())
 l313l.loop.create_task(group_loop())
