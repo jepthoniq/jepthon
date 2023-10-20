@@ -159,11 +159,10 @@ async def autoname_loop(event):
         name = f"{lMl10l} {HM}"
         prompt_msg = "هل تريد وضع الوقت في المربع الأول أم المربع الثاني؟\n\nاختر 1 للمربع الأول و 2 للمربع الثاني."
         async with l313l.conversation(event.chat_id) as conv:
+            await conv.send_message(prompt_msg)
             try:
-                await conv.send_message(prompt_msg, timeout=120)
-                response = await conv.get_response()
+                response = await conv.get_response(timeout=120)
                 response_text = response.text.strip()
-
                 if response_text == "1":
                     await l313l(functions.account.UpdateProfileRequest(first_name=name))
                 elif response_text == "2":
