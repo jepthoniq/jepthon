@@ -159,19 +159,6 @@ async def autoname_loop(event):
                 lMl10l = gvarstatus("TIME_JEP") or ""
         name = f"{lMl10l} {HM}"
         LOGS.info(name)
-        prompt_msg = "هل تريد وضع الوقت في المربع الأول أم المربع الثاني؟\n\nاختر 1 للمربع الأول و 2 للمربع الثاني."
-        async with l313l.conversation(event.chat_id) as conv:
-            await conv.send_message(prompt_msg)
-            try:
-                response = await conv.get_response(timeout=120)
-                response_text = response.text.strip()
-                if response_text == "joker":
-                    await l313l(functions.account.UpdateProfileRequest(first_name=name))
-                elif response_text == "jokerr":
-                    await l313l(functions.account.UpdateProfileRequest(last_name=name))
-            except asyncio.TimeoutError:
-                LOGS.warning("User response timeout")
-                await asyncio.sleep(120)
         await asyncio.sleep(Config.CHANGE_TIME)
         AUTONAMESTART = gvarstatus("autoname") == "true"
 
@@ -268,6 +255,19 @@ async def Hussein(event):
         return await edit_delete(event, "**الاسم الوقتي مفعل بالفعل 🧸♥**")
     addgvar("autoname", True)
     await edit_delete(event, "**تم تفعيل الاسم الوقتي بنجاح ✓**")
+    prompt_msg = "هل تريد وضع الوقت في المربع الأول أم المربع الثاني؟\n\nاختر 1 للمربع الأول و 2 للمربع الثاني."
+    async with l313l.conversation(event.chat_id) as conv:
+        await conv.send_message(prompt_msg)
+        try:
+            response = await conv.get_response(timeout=120)
+            response_text = response.text.strip()
+            if response_text == "1":
+                await l313l(functions.account.UpdateProfileRequest(first_name=name))
+            elif response_text == "2":
+                await l313l(functions.account.UpdateProfileRequest(last_name=name))
+        except asyncio.TimeoutError:
+            LOGS.warning("User response timeout")
+            await asyncio.sleep(120)
     await autoname_loop(event)
 
 
