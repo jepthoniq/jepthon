@@ -261,9 +261,9 @@ async def Hussein(event):
         try:
             response = await conv.get_response(timeout=120)
             response_text = response.text.strip()
-            if response_text == "1":
+            if '1' in event.message.message:
                 await l313l(functions.account.UpdateProfileRequest(first_name=name))
-            elif response_text == "2":
+            elif '2' in event.message.message:
                 await l313l(functions.account.UpdateProfileRequest(last_name=name))
         except asyncio.TimeoutError:
             LOGS.warning("User response timeout")
