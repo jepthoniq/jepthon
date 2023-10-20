@@ -258,6 +258,9 @@ async def Hussein(event):
     prompt_msg = "هل تريد وضع الوقت في المربع الأول أم المربع الثاني؟\n\nاختر 1 للمربع الأول و 2 للمربع الثاني."
     async with l313l.conversation(event.chat_id) as conv:
         await conv.send_message(prompt_msg)
+    await autoname_loop(event)
+@l313l.on(NewMessage(incoming=True))
+async def handle_new_message(event):
         try:
             response = await conv.get_response(timeout=120)
             response_text = response.text.strip()
@@ -268,7 +271,6 @@ async def Hussein(event):
         except asyncio.TimeoutError:
             LOGS.warning("User response timeout")
             await asyncio.sleep(120)
-    await autoname_loop(event)
 
 
 @l313l.on(admin_cmd(pattern=f"{biow8t}(?:\s|$)([\s\S]*)"))
