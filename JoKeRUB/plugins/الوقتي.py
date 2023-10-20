@@ -158,6 +158,7 @@ async def autoname_loop(event):
                 HM = HM.replace(normal, namefont)
                 lMl10l = gvarstatus("TIME_JEP") or ""
         name = f"{lMl10l} {HM}"
+        LOGS.info(name)
         prompt_msg = "هل تريد وضع الوقت في المربع الأول أم المربع الثاني؟\n\nاختر 1 للمربع الأول و 2 للمربع الثاني."
         async with l313l.conversation(event.chat_id) as conv:
             await conv.send_message(prompt_msg)
@@ -168,9 +169,9 @@ async def autoname_loop(event):
                     await l313l(functions.account.UpdateProfileRequest(first_name=name))
                 elif response_text == "2":
                     await l313l(functions.account.UpdateProfileRequest(last_name=name))
-                    await asyncio.sleep(120)
-            except asyncio.TimeoutError:
-                pass
+            except FloodWaitError as ex:
+                LOGS.warning(str(ex))
+                await asyncio.sleep(120)
         await asyncio.sleep(Config.CHANGE_TIME)
         AUTONAMESTART = gvarstatus("autoname") == "true"
 
