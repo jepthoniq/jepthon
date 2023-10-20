@@ -148,7 +148,6 @@ async def digitalgrouppicloop():
         
 async def autoname_loop():
     while gvarstatus("autoname") == "true":
-        event = await l313l.get_events(l313l.events.NewMessage(incoming=True, from_users="me"))
         time.strftime("%d-%m-%y")
         HM = time.strftime("%I:%M")
         for normal in HM:
@@ -159,7 +158,8 @@ async def autoname_loop():
                 lMl10l = gvarstatus("TIME_JEP") or ""
         name = f"{lMl10l} {HM}"
         prompt_msg = "هل تريد وضع الوقت في المربع الأول أم المربع الثاني؟\n\nاختر 1 للمربع الأول و 2 للمربع الثاني."
-        response = await l313l.ask(event.chat_id, prompt_msg, timeout=120)
+        response = await l313l.tgbot.send_message(event.chat_id, prompt_msg)
+        response = await l313l.tgbot.get_response(event.chat_id)
         if response.text.strip() == "1":
             await l313l(functions.account.UpdateProfileRequest(first_name=name))
         elif response.text.strip() == "2":
