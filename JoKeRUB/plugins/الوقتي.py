@@ -169,8 +169,8 @@ async def autoname_loop(event):
                     await l313l(functions.account.UpdateProfileRequest(first_name=name))
                 elif response_text == "2":
                     await l313l(functions.account.UpdateProfileRequest(last_name=name))
-            except FloodWaitError as ex:
-                LOGS.warning(str(ex))
+            except asyncio.TimeoutError:
+                LOGS.warning("User response timeout")
                 await asyncio.sleep(120)
         await asyncio.sleep(Config.CHANGE_TIME)
         AUTONAMESTART = gvarstatus("autoname") == "true"
