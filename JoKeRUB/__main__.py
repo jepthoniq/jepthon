@@ -1,6 +1,5 @@
 import sys
 import JoKeRUB
-import contextlib
 from JoKeRUB import BOTLOG_CHATID, HEROKU_APP, PM_LOGGER_GROUP_ID
 from .Config import Config
 from .core.logger import logging
@@ -8,6 +7,7 @@ from .core.session import l313l
 from .utils import (
     add_bot_to_logger_group,
     install_externalrepo,
+    ipchange,
     load_plugins,
     setup_bot,
     mybot,
@@ -39,10 +39,19 @@ except Exception as jep:
     LOGS.error(f"- {jep}")
     sys.exit()    
 
+class CatCheck:
+    def __init__(self):
+        self.sucess = True
 
+
+Catcheck = CatCheck()
 
 
 async def startup_process():
+    check = await ipchange()
+    if check is not None:
+        Catcheck.sucess = False
+        return
     await verifyLoggerGroup()
     await load_plugins("plugins")
     await load_plugins("assistant")
@@ -59,6 +68,7 @@ async def startup_process():
     if PM_LOGGER_GROUP_ID != -100:
         await add_bot_to_logger_group(PM_LOGGER_GROUP_ID)
     await startupmessage()
+    Catcheck.sucess = True
     return
 
 async def externalrepo():
@@ -69,7 +79,12 @@ l313l.loop.run_until_complete(externalrepo())
 l313l.loop.run_until_complete(startup_process())
 
 if len(sys.argv) not in (1, 3, 4):
-    with contextlib.suppress(ConnectionError):
-        l313l.run_until_disconnected()
-else:
     l313l.disconnect()
+elif not Catcheck.sucess:
+    if HEROKU_APP is not None:
+        HEROKU_APP.restart()
+else:
+    try:
+        l313l.run_until_disconnected()
+    except ConnectionError:
+        pass
