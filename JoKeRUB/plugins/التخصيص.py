@@ -197,7 +197,7 @@ async def custom_HuRe(event):
                 event, "**⎙ :: عزيزي المستخدم انت لم تقوم باضافه هذا الفار اصلا**"
             )
         delgvar("ALIVE_TEXT")
-    if input_str == "زخرفة الاسم" or input_str == "زخرفه الاسم":
+    if input_str == "زخرفة الارقام" or input_str == "زخرفه الارقام":
         if gvarstatus("JP_FN") is None:
             return await edit_delete(
                 event, "**⎙ :: عزيزي المستخدم انت لم تقوم باضافه هذا الفار اصلا**"
