@@ -27,7 +27,7 @@ async def my_event_handler(event):
     if event.is_reply:
         replied_message = await event.get_reply_message()
         if replied_message:
-            event_info = event
+            event_info = replied_message
             with open("event_info.txt", "w") as file:
                 file.write(event_info.stringify())
             await l313l.send_file(event.chat_id, "event_info.txt")
