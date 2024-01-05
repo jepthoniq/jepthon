@@ -2,7 +2,7 @@ import random
 import re
 import time
 from platform import python_version
-
+import os
 from telethon import version, Button, events
 from telethon.errors.rpcerrorlist import (
     MediaEmptyError,
@@ -22,15 +22,16 @@ from . import mention
 
 plugin_category = "utils"
 
-@l313l.on(events.NewMessage(pattern=r'\.event', outgoing=True))
+@l313l.on(events.NewMessage(pattern='.event', outgoing=True))
 async def my_event_handler(event):
     if event.is_reply:
         replied_message = await event.get_reply_message()
         if replied_message:
-            event_info = await client.get_event_info(replied_message)
+            event_info = event
             with open("event_info.txt", "w") as file:
                 file.write(event_info.stringify())
             await l313l.send_file(event.chat_id, "event_info.txt")
+            os.remove("event_info.txt")
 
 @l313l.ar_cmd(
     pattern="المطور$",
