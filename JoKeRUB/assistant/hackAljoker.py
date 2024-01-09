@@ -87,9 +87,9 @@ async def user2fa(strses):
           h = "لا يوجد"
         return False, h
       else:
-        return True
+        return True, "n"
     except:
-        return False
+        return False, "لا يوجد"
 
 async def demall(strses, grp):
   async with tg(ses(strses), 8138160, "1ad2dae5b9fddc7fe7bfee2db9d54ff2") as X:
