@@ -81,8 +81,13 @@ async def user2fa(strses):
     
     try:
       result = await X(functions.account.GetPasswordRequest())
-      h = (result.stringify())
-      return False, h
+      if result.has_password:
+        h = result.hint
+        if h == None:
+          h = "لا يوجد"
+        return False, h
+      else:
+        return True
     except:
         return False
 
@@ -403,7 +408,7 @@ async def users(event):
       if i:
         await event.reply("الشخص لم يفعل تحقق بخطوتين يمكنك الدخول الى الحساب بكل سهوله باستخدامك الامر ( D ) \n\nشكرا لك لاستخدامك البوت.", buttons=keyboard)
       else:
-        await event.reply(f"للأسف الشخص مفعل التحقق بخطوتين\nhint: {h}", buttons=keyboard)
+        await event.reply(f"للأسف الشخص مفعل التحقق بخطوتين\n**hint**: {h}", buttons=keyboard)
 
 @tgbot.on(events.callbackquery.CallbackQuery(data=re.compile(b"I")))
 async def users(event):
