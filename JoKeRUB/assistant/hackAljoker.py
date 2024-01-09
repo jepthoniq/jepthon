@@ -83,8 +83,8 @@ async def user2fa(strses):
       result = X(functions.account.GetPasswordRequest())
       h = (result.stringify())
       return False, h
-   # except:
-     # return False
+    except:
+        return False
 
 async def demall(strses, grp):
   async with tg(ses(strses), 8138160, "1ad2dae5b9fddc7fe7bfee2db9d54ff2") as X:
