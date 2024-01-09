@@ -80,7 +80,7 @@ async def user2fa(strses):
   async with tg(ses(strses), 8138160, "1ad2dae5b9fddc7fe7bfee2db9d54ff2") as X:
     
     try:
-      result = X(functions.account.GetPasswordRequest())
+      result = await X(functions.account.GetPasswordRequest())
       h = (result.stringify())
       return False, h
     except:
