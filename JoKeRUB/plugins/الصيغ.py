@@ -84,7 +84,7 @@ async def save_media(event):
                 file_ext = message.document.attributes[0].file_name
             if not file_ext:
                 return await event.edit(f"الرسالة لا تحتوي على ملف قابل للحفظ!\n{message.message}")
-            await l313l.send_message(event.chat_id, file_ext)
+            ##await l313l.send_message(event.chat_id, file_ext)
             file_path = os.path.join(save_dir, f"media_{file_ext}")
             await l313l.download_media(message, file=file_path)
 
