@@ -158,7 +158,7 @@ async def ipchange():
     """
     Just to check if ip change or not
     """
-    newip = requests.get("https://ipv4.jsonip.com/").json()["ip"]
+    newip = requests.get("https://api.ipify.org?format=json").json()["ip"]
     if gvarstatus("ipaddress") is None:
         addgvar("ipaddress", newip)
         return None
