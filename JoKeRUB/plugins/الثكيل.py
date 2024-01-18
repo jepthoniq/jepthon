@@ -6,7 +6,7 @@ import asyncio
 from telethon import events
 from JoKeRUB import l313l
 
-
+hussein_time = 0
 hussein_enabled = False
 aljoker_enabled = False
 JOKER_ID = {}
