@@ -36,14 +36,6 @@ async def Hussein(event):
     aljoker_enabled = True
     await event.edit(f'**᯽︙ تم تفعيل امر التكبر بنجاح مع  {joker_time} ثانية للمستخدم {user_id}**')
 
-@l313l.on(events.NewMessage(incoming=True, func=lambda e: e.is_private))
-async def Hussein(event):
-    global hussein_enabled
-    if hussein_enabled:
-        if hussein_time > 0:
-            await asyncio.sleep(hussein_time)
-        await event.mark_read()
-
 @l313l.on(events.NewMessage(outgoing=True, pattern=r'^\.مود التكبر تعطيل$'))
 async def Hussein(event):
     global hussein_enabled
@@ -56,3 +48,10 @@ async def Hussein(event):
     hussein_time = int(event.pattern_match.group(1))
     hussein_enabled = True
     await event.edit(f'**᯽︙ تم تفعيل امر التكبر بنجاح مع  {hussein_time} ثانية**')
+@l313l.on(events.NewMessage(incoming=True, func=lambda e: e.is_private))
+async def Hussein(event):
+    global hussein_enabled
+    if hussein_enabled:
+        if hussein_time > 0:
+            await asyncio.sleep(hussein_time)
+        await event.mark_read()
