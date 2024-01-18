@@ -5,8 +5,6 @@
 import asyncio
 from telethon import events
 from JoKeRUB import l313l
-
-hussein_time = 0
 hussein_enabled = False
 aljoker_enabled = False
 JOKER_ID = {}
@@ -52,6 +50,6 @@ async def Hussein(event):
 async def Hussein(event):
     global hussein_enabled, hussein_time
     if hussein_enabled:
-        if hussein_time:
+        if hussein_time > 0:
             await asyncio.sleep(hussein_time)
         await event.mark_read()
