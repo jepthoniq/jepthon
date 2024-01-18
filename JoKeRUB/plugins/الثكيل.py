@@ -52,6 +52,6 @@ async def Hussein(event):
 async def Hussein(event):
     global hussein_enabled, hussein_time
     if hussein_enabled:
-        if hussein_time > 0:
+        if hussein_time:
             await asyncio.sleep(hussein_time)
         await event.mark_read()
