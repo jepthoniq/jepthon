@@ -39,12 +39,17 @@ async def Hussein(event):
     global hussein_enabled
     hussein_enabled = False
     await event.edit('**᯽︙ تم تعطيل امر التكبر على الجميع بنجاح ✅**')
-@l313l.on(events.NewMessage(incoming=True, pattern=f"مود التكبر (\d+)", func=lambda e: e.is_private))
+    
+@l313l.on(admin_cmd(pattern=f"مود التكبر (\d+)"))
 async def Hussein(event):
     global hussein_enabled, hussein_time
-    await event.edit(f'**᯽︙ تم تفعيل امر التكبر بنجاح مع  {hussein_time} ثانية**')
     hussein_time = int(event.pattern_match.group(1))
+    hussein_enabled = True
+    await event.edit(f'**᯽︙ تم تفعيل امر التكبر بنجاح مع  {hussein_time} ثانية**')
+
+@l313l.on(events.NewMessage(incoming=True, func=lambda e: e.is_private))
+async def Hussein(event):
+    global hussein_enabled, hussein_time
     if hussein_enabled:
-        if hussein_time > 0:
-            await asyncio.sleep(hussein_time)
-        await event.mark_read()
+        await asyncio.sleep(hussein_time)
+    await event.mark_read()
