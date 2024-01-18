@@ -6,7 +6,7 @@ import asyncio
 from telethon import events
 from JoKeRUB import l313l
 
-hussein_time = {}
+hussein_time = 0
 hussein_enabled = False
 aljoker_enabled = False
 JOKER_ID = {}
@@ -50,7 +50,7 @@ async def Hussein(event):
     await event.edit(f'**᯽︙ تم تفعيل امر التكبر بنجاح مع  {hussein_time} ثانية**')
 @l313l.on(events.NewMessage(incoming=True, func=lambda e: e.is_private))
 async def Hussein(event):
-    global hussein_enabled
+    global hussein_enabled, hussein_time
     if hussein_enabled:
         if hussein_time > 0:
             await asyncio.sleep(hussein_time)
