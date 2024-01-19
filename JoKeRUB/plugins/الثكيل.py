@@ -49,7 +49,7 @@ async def Hussein(event):
 
 @l313l.on(events.NewMessage(incoming=True, func=lambda e: e.is_private))
 async def Hussein(event):
-    global hussein_enabled, hussein_time
+    global hussein_enabled
     if hussein_enabled:
         await asyncio.sleep(hussein_time)
-    await event.mark_read()
+        await event.mark_read()
