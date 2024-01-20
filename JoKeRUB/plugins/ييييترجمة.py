@@ -8,7 +8,7 @@ from telethon import events, types
 from ..sql_helper.globals import addgvar, delgvar, gvarstatus
 from ..core.managers import edit_delete, edit_or_reply
 from ..helpers.functions import soft_deEmojify
-
+plugin_category = "extra"
 langs = {
     'عربي': 'ar',
     'فارسي': 'fa',
