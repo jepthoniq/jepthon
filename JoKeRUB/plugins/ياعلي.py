@@ -106,6 +106,8 @@ async def reda (event):
 
 @l313l.ar_cmd(incoming=True)
 async def reda(event):
+    if event.sender_id.user_id == event.client.me_id:
+        return
     if gvarstatus("subprivate"):
         if event.is_private:
             try:
