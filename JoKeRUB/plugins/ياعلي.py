@@ -1,5 +1,6 @@
 from JoKeRUB import l313l, bot
 import time
+from telethon.tl import types
 from JoKeRUB import BOTLOG_CHATID
 from ..sql_helper.globals import addgvar, delgvar, gvarstatus
 import asyncio
@@ -106,7 +107,8 @@ async def reda (event):
 
 @l313l.ar_cmd(incoming=True)
 async def reda(event):
-    if event.sender_id.bot:
+    sender = await event.get_peer()
+    if isinstance(sender, types.User) and sender.bot:
         return
     if gvarstatus("subprivate"):
         if event.is_private:
