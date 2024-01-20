@@ -1,7 +1,8 @@
 from asyncio import sleep
 import requests
 import json
-from JoKeRUB.helpers.functions.functions import translate
+from googletrans import LANGUAGES, Translator
+from JoKeRUB.helpers.functions.functions import getTranslate
 from JoKeRUB import l313l
 from telethon import events, types
 from ..sql_helper.globals import addgvar, delgvar, gvarstatus
@@ -37,19 +38,9 @@ langs = {
     'كردي': 'ku',
 }
 
-async def gtrans(text, lan):
-    try:
-        response = translate(text, lang_tgt=lan)
-        if "error" in response.lower():
-            print("Error in response")  # إضافة هذا السطر
-            return False
-    except Exception as er:
-        return f"حدث خطأ \n{er}"
-    return response
-
 @l313l.ar_cmd(
     pattern="ترجمة ([\s\S]*)",
-    command=("ترجمة", "tools"),
+    command=("ترجمة", plugin_category),
     info={
         "header": "To translate the text to required language.",
         "note": "For langugage codes check [this link](https://bit.ly/2SRQ6WU)",
@@ -71,22 +62,19 @@ async def _(event):
         lan, text = input_str.split(";")
     else:
         return await edit_delete(
-            event, "** قم بالرد على الرسالة للترجمة **", time=5
+            event, "`.ترجمة ورمز الدولة بالرد على الرسالة المراد ترجمتها", time=5
         )
     text = soft_deEmojify(text.strip())
     lan = lan.strip()
-    if len(text) < 2:
-        return await edit_delete(event, "قم بكتابة ما تريد ترجمته!")
+    Translator()
     try:
-        trans = await gtrans(text, lan)
-        if not trans:
-            return await edit_delete(event, "**تحقق من رمز اللغة !, لا يوجد هكذا لغة**")      
-        output_str = f"**تمت الترجمة من ar الى {lan}**\
-                \n`{trans}`"
+        translated = await getTranslate(text, dest=lan)
+        after_tr_text = translated.text
+        output_str = f"**تمت الترجمة من {LANGUAGES[translated.src].title()} الى {LANGUAGES[lan].title()}**\
+                \n`{after_tr_text}`"
         await edit_or_reply(event, output_str)
     except Exception as exc:
-        await edit_delete(event, f"**خطا:**\n`{exc}`", time=5)
-
+        await edit_delete(event, f"**خطأ:**\n`{exc}`", time=5)
 
 @l313l.ar_cmd(pattern="(الترجمة الفورية|الترجمه الفوريه|ايقاف الترجمة|ايقاف الترجمه)")
 async def reda(event):
