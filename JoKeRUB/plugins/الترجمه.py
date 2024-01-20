@@ -40,7 +40,9 @@ langs = {
 async def gtrans(text, lan):
     try:
         response = translate(text, lang_tgt=lan)
+        print("Response:", response)
         if "error" in response.lower():
+            print("Error in response")
             return False
     except Exception as er:
         return f"حدث خطأ \n{er}"
