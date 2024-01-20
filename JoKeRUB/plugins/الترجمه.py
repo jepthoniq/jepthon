@@ -40,12 +40,12 @@ langs = {
 async def gtrans(text, lan):
     try:
         response = translate(text, lang_tgt=lan)
-        if response.status_code != 200:
-            print("Error status code:", response.status_code)  # إضافة هذا السطر
+        if "error" in response.lower():
+            print("Error in response")  # إضافة هذا السطر
             return False
     except Exception as er:
         return f"حدث خطأ \n{er}"
-    return response.text
+    return response
 
 @l313l.ar_cmd(
     pattern="ترجمة ([\s\S]*)",
