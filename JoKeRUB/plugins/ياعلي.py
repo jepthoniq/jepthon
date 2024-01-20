@@ -107,7 +107,7 @@ async def reda (event):
 
 @l313l.ar_cmd(incoming=True)
 async def reda(event):
-    sender = await event.get_peer()
+    sender = await event.get_sender()
     if isinstance(sender, types.User) and sender.bot:
         return
     if gvarstatus("subprivate"):
