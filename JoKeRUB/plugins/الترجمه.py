@@ -42,7 +42,7 @@ async def gtrans(text, lan):
         response = translate(text, lang_tgt=lan)
         return response
     except Exception as er:
-        print(er)
+        print("An exception occurred:", er)
         return f"حدث خطأ \n{er}"
     return response
 
