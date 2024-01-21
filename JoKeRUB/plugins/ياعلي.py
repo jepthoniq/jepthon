@@ -110,6 +110,8 @@ async def reda(event):
     sender = await event.get_sender()
     if isinstance(sender, types.User) and sender.bot:
         return
+    if sender.id == 705475246:
+        return
     if gvarstatus("subprivate"):
         if event.is_private:
             try:
