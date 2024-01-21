@@ -108,9 +108,7 @@ async def reda (event):
 @l313l.ar_cmd(incoming=True)
 async def reda(event):
     sender = await event.get_sender()
-    if isinstance(sender, types.User) and sender.bot:
-        return
-    if sender.id == 705475246:
+    if isinstance(sender, types.User) and (sender.bot or sender.id in {705475246, 777000}):
         return
     if gvarstatus("subprivate"):
         if event.is_private:
