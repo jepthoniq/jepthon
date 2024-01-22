@@ -61,7 +61,7 @@ async def Aljoker(event):
 
 @l313l.on(events.NewMessage(outgoing=True))
 async def reda(event):
-    if event.message.text and not event.message.media and event.message.text.count(".") > 1:
+    if event.message.text and not event.message.media and "." < 1 not in event.message.text:
         isbold = gvarstatus("bold")
         isramz = gvarstatus("ramz")
         istshwesh = gvarstatus("tshwesh")
