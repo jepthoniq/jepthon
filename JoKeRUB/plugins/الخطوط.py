@@ -48,7 +48,7 @@ async def btext(event):
 
 @l313l.on(admin_cmd(pattern="(خط الجوكر|خط جوكر)"))
 async def Aljoker(event):
-    Aljoker = gvarstatus("ramz")
+    Aljoker = gvarstatus("joker")
     if not Aljoker:
         addgvar ("joker", "on")
         await edit_delete(event, "**᯽︙ تم تفعيل خط الجوكر بنجاح ✓**")
