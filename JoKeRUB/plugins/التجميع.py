@@ -499,37 +499,6 @@ async def Reda(event):
     global its_reda
     its_reda = False
     await event.edit("** ᯽︙ تم ايقاف السرقة بنجاح ✓ **")
-@l313l.ar_cmd(pattern="استثمار وعد")
-async def w3d_joker(event):
-    await event.delete()
-    global its_Reham
-    its_Reham = True
-    while its_Reham:
-        if event.is_group:
-            await event.client.send_message(event.chat_id, "فلوسي")
-            await asyncio.sleep(2)
-            #aljoker = await event.client.get_messages(event.chat_id, limit=1)
-            #aljoker = aljoker[0].message
-            #aljoker = ("".join(aljoker.split(maxsplit=2)[2:])).split(" ", 2)
-            amount = event.message.message
-            amount = int(''.join(filter(str.isdigit, amount)))
-            global amount
-            amount = amount
-            if int(amount) > 500000000:
-                await event.client.send_message(event.chat_id,f"استثمار {amount}")
-                await asyncio.sleep(1)
-                
-            else:
-                await event.client.send_message(event.chat_id, f"استثمار {amount}")
-            await asyncio.sleep(1210)
-        
-        else:
-            await event.edit("** ᯽︙ امر الاستثمار يمكنك استعماله في المجموعات فقط 🖤**")
-@l313l.ar_cmd(pattern="ايقاف استثمار وعد")
-async def disable_w3d(event):
-    global its_Reham
-    its_Reham = False
-    await event.edit("**تم تعطيل عملية الاستثمار وعد.**")
 
 @l313l.on(NewMessage(incoming=True))
 async def handle_new_message(event):
@@ -552,3 +521,32 @@ async def handle_new_message(event):
                 amount_t = int(''.join(filter(str.isdigit, amount_t)))
                 global amount
                 amount = amount_t
+@l313l.ar_cmd(pattern="استثمار وعد")
+async def w3d_joker(event):
+    await event.delete()
+    global its_Reham
+    its_Reham = True
+    while its_Reham:
+        if event.is_group:
+            await event.client.send_message(event.chat_id, "فلوسي")
+            await asyncio.sleep(2)
+            #aljoker = await event.client.get_messages(event.chat_id, limit=1)
+            #aljoker = aljoker[0].message
+            #aljoker = ("".join(aljoker.split(maxsplit=2)[2:])).split(" ", 2)
+            global amount
+            amount = amount
+            if int(amount) > 500000000:
+                await event.client.send_message(event.chat_id,f"استثمار {amount}")
+                await asyncio.sleep(1)
+                
+            else:
+                await event.client.send_message(event.chat_id, f"استثمار {amount}")
+            await asyncio.sleep(1210)
+        
+        else:
+            await event.edit("** ᯽︙ امر الاستثمار يمكنك استعماله في المجموعات فقط 🖤**")
+@l313l.ar_cmd(pattern="ايقاف استثمار وعد")
+async def disable_w3d(event):
+    global its_Reham
+    its_Reham = False
+    await event.edit("**تم تعطيل عملية الاستثمار وعد.**")
