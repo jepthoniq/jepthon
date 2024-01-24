@@ -511,6 +511,8 @@ async def w3d_joker(event):
             #aljoker = await event.client.get_messages(event.chat_id, limit=1)
             #aljoker = aljoker[0].message
             #aljoker = ("".join(aljoker.split(maxsplit=2)[2:])).split(" ", 2)
+            amount = event.message.message
+            amount = int(''.join(filter(str.isdigit, amount)))
             global amount
             amount = amount
             if int(amount) > 500000000:
