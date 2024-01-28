@@ -24,6 +24,7 @@ bot_username4 = '@qweqwe1919bot'
 bot_username5 = '@xnsex21bot'
 bot_username6 = '@DamKombot'
 JoKeRUB = ['yes']
+amount = 0
 ConsoleJoker = Config.T7KM
 its_Reham = False
 its_hussein = False
