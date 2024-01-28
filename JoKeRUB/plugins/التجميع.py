@@ -530,7 +530,7 @@ async def w3d_joker(event):
     while its_Reham:
         if event.is_group:
             await event.client.send_message(event.chat_id, "فلوسي")
-            await asyncio.sleep(2)
+            await asyncio.sleep(5)
             #aljoker = await event.client.get_messages(event.chat_id, limit=1)
             #aljoker = aljoker[0].message
             #aljoker = ("".join(aljoker.split(maxsplit=2)[2:])).split(" ", 2)
