@@ -17,6 +17,7 @@ from ..Config import Config
 import re
 from telethon import events
 c = requests.session()
+amount = 0
 bot_username = '@EEObot'
 bot_username2 = '@A_MAN9300BOT'
 bot_username3 = '@MARKTEBOT'
