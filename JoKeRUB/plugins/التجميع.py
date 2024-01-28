@@ -534,13 +534,7 @@ async def w3d_joker(event):
             #aljoker = aljoker[0].message
             #aljoker = ("".join(aljoker.split(maxsplit=2)[2:])).split(" ", 2)
             global amount
-            amount = amount
-            if int(amount) > 500000000:
-                await event.client.send_message(event.chat_id,f"استثمار {amount}")
-                await asyncio.sleep(1)
-                
-            else:
-                await event.client.send_message(event.chat_id, f"استثمار {amount}")
+            await event.client.send_message(event.chat_id, f"استثمار {amount}")
             await asyncio.sleep(1210)
         
         else:
