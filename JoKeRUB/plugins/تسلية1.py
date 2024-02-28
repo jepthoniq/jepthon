@@ -327,7 +327,7 @@ async def Hussein(event):
         if owner_id == l313l.uid:
             if event.message.message == "انتة شنو":
                 animation_interval = 4
-                animation_ttl = range(4)
+                animation_ttl = range(3)
                 animation_chars = [
                     "اني فد واحد مطي",
                     "وزبالة",
@@ -335,7 +335,6 @@ async def Hussein(event):
                 ]
                 for i in animation_ttl:
                     await asyncio.sleep(animation_interval)
-                    await event.reply(animation_chars[i % 14])
-                    await l313l.send_file("https://t.me/MemeSoundJep/105")
-
-
+                    await event.reply(animation_chars[i])
+                await asyncio.sleep(animation_interval)
+                await l313l.send_file("https://t.me/MemeSoundJep/105")
