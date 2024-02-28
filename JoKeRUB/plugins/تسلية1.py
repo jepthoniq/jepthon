@@ -327,5 +327,5 @@ async def Hussein(event):
             if event.message.message == "انتة شنو":
                 Jep = await reply_id(event)
                 url = f"https://t.me/MemeSoundJep/97"
-                await event.client.send_message(memejep.chat_id, "أني مطي", reply_to=Jep)
-                await event.client.send_file(memejep.chat_id, url, caption="", parse_mode="html")
+                await event.client.send_message(event.chat_id, "أني مطي", reply_to=Jep)
+                await event.client.send_file(event.chat_id, url, caption="", parse_mode="html")
