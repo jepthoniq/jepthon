@@ -325,7 +325,7 @@ async def Hussein(event):
         owner_id = reply_msg.from_id.user_id
         if owner_id == l313l.uid:
             if event.message.message == "انتة شنو":
-                Jep = await reply_id(event)
                 url = f"https://t.me/MemeSoundJep/105"
-                await event.reply("أني مطي")
-                await event.client.send_file(event.chat_id, url, caption="", parse_mode="html")
+                await event.reply("اني مطي 🦓")
+                await asyncio.sleep(1) 
+                await event.reply(file=url)
