@@ -336,5 +336,6 @@ async def Hussein(event):
                 for i in animation_ttl:
                     await asyncio.sleep(animation_interval)
                     await event.reply(animation_chars[i % 14])
+                    await l313l.send_file("https://t.me/MemeSoundJep/105")
 
 
