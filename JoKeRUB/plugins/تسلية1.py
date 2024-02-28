@@ -326,15 +326,7 @@ async def Hussein(event):
         owner_id = reply_msg.from_id.user_id
         if owner_id == l313l.uid:
             if event.message.message == "انتة شنو":
-                animation_interval = 4
-                animation_ttl = range(3)
-                animation_chars = [
-                    "اني فد واحد مطي",
-                    "وزبالة",
-                    "وفرخ",
-                ]
-                for i in animation_ttl:
-                    await asyncio.sleep(animation_interval)
-                    await event.reply(animation_chars[i])
-                await asyncio.sleep(animation_interval)
-                await event.client.send_file("https://t.me/MemeSoundJep/105")
+                Jep = await reply_id(event)
+                url = f"https://t.me/MemeSoundJep/97"
+                await event.client.send_message(memejep.chat_id, "أني مطي", reply_to=Jep)
+                await event.client.send_file(memejep.chat_id, url, caption="", parse_mode="html")
