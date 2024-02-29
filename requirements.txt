@@ -1,4 +1,4 @@
-git+https://github.com/LonamiWebs/Telethon/archive/v1.zip
+telethon
 git+https://github.com/sandy1709/py-googletrans
 git+https://github.com/yt-dlp/yt-dlp
 ipaddress
