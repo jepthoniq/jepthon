@@ -34,6 +34,7 @@ class Config(object):
     # BASIC and MAIN CONFIG VARS
     # for profile default name
     AUTONAME = os.environ.get("AUTONAME", None)
+    MAX_FLOOD_IN_PMS = int(os.environ.get("MAX_FLOOD_IN_PMS", 7))
 
     # تعديلي
     PING_PIC = os.environ.get("PING_PIC")
