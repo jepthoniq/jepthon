@@ -130,24 +130,6 @@ async def startupmessage():
         LOGS.error(e)
         return None
 
-async def ipchange():
-    """
-    Just to check if ip change or not
-    """
-    newip = requests.get("https://ipv4.jsonip.com/").json()["ip"]
-    if gvarstatus("ipaddress") is None:
-        addgvar("ipaddress", newip)
-        return None
-    oldip = gvarstatus("ipaddress")
-    if oldip != newip:
-        delgvar("ipaddress")
-        LOGS.info("Ip Change detected")
-        try:
-            await l313l.disconnect()
-        except (ConnectionError, CancelledError):
-            pass
-        return "ip change"
-
 
 async def mybot():
     try:
