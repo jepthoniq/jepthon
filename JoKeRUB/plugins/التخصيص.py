@@ -103,6 +103,9 @@ async def custom_HuRe(event):
     if input_str == "التخزين" or input_str == "تخزين":
         addgvar("PM_LOGGER_GROUP_ID", text)
         var = "PM_LOGGER_GROUP_ID"
+    if input_str == "كليشة الخاص" or input_str == "كليشه الخاص":
+        addgvar("aljoker_message", text)
+        var = "aljoker_message"
     if input_str == "اشعارات" or input_str == "الاشعارات":
         addgvar("PRIVATE_GROUP_BOT_API_ID", text)
         var = "PRIVATE_GROUP_BOT_API_ID"
@@ -287,6 +290,25 @@ async def security_aljoker(event):
         response = telegraph.upload_file(media)
         url = 'https://telegra.ph' + response[0]['src']
         addgvar("pmpermit_pic", url)
+        await event.edit(f"**᯽︙ تم بنجاح اضافة صورة  {input_str} ✓ **")
+        if BOTLOG_CHATID:
+            await event.client.send_message(
+                BOTLOG_CHATID,
+                f"#اضف_فار\n**{input_str}** تم تحديثه بنجاح في قاعدة البيانات كـ: {url}",
+            )
+        else:
+            await event.edit("**حدث خطأ أثناء تحميل الصورة على Telegraph**")
+    else:
+        await event.edit("** ᯽︙ يرجى الرد على الصورة او فيديو لتحديث الفار **")
+@l313l.ar_cmd(pattern="اضف صورة (الخاص|خاص) ?(.*)")
+async def al5a9_aljoker(event):
+    reply = await event.get_reply_message()
+    if reply and reply.media:
+        input_str = event.pattern_match.group(1)
+        media = await reply.download_media()
+        response = telegraph.upload_file(media)
+        url = 'https://telegra.ph' + response[0]['src']
+        addgvar("aljoker_url", url)
         await event.edit(f"**᯽︙ تم بنجاح اضافة صورة  {input_str} ✓ **")
         if BOTLOG_CHATID:
             await event.client.send_message(
