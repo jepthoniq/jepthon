@@ -8,6 +8,7 @@ from telethon.tl.types import Channel, Chat, User, ChannelParticipantsAdmins
 from telethon.tl.functions.channels import GetFullChannelRequest
 from telethon.errors.rpcerrorlist import ChannelPrivateError
 from ..Config import Config
+from telethon.tl.custom import Message
 from telethon.errors import (
     ChatAdminRequiredError,
     FloodWaitError,
@@ -960,7 +961,6 @@ async def handle_incoming_message(event):
     if is_game_started2 and event.raw_text.lower() == "انا" and not joker_player:
         joker_player = event.sender_id
         await event.reply("تم تسجيل مشاركتك في لعبة المحيبس توكل على الله.")
-
 def format_board(game_board, numbers_board):
     formatted_board = ""
     formatted_board += " ".join(numbers_board[0]) + "\n"
