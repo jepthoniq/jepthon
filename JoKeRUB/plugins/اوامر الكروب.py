@@ -892,20 +892,21 @@ async def handle_start(event):
 @l313l.on(events.NewMessage(incoming=True))
 async def handle_winner(event):
     global is_game_started, is_word_sent, winner_id, word, points
-    if is_game_started and not event.chat_id and is_word_sent and word.lower() in event.raw_text.lower():
-        bot_entity = await get_bot_entity()
-        if bot_entity and event.sender_id != bot_entity.id:
-            is_word_sent = True
-            winner_id = event.sender_id
-            if winner_id not in points:
-                points[winner_id] = 0
-            points[winner_id] += 1
-            sender = await event.get_sender()
-            sender_first_name = sender.first_name if sender else 'مجهول'
-            sorted_points = sorted(points.items(), key=lambda x: x[1], reverse=True)
-            points_text = '\n'.join([f'{i+1}• {(await l313l.get_entity(participant_id)).first_name}: {participant_points}' for i, (participant_id, participant_points) in enumerate(sorted_points)])
-            await l313l.send_message(event.chat_id, f'الف مبرووووك 🎉 الاعب ( {sender_first_name} ) فاز! \n اصبحت نقاطة: {points[winner_id]}\nنقاط المشاركين:\n{points_text}')
-
+    if is_game_started and not is_word_sent and word.lower() in event.raw_text.lower():
+        messi = event.chat_id
+        if event.chat_id == messi:
+            bot_entity = await get_bot_entity()
+            if bot_entity and event.sender_id != bot_entity.id:
+                is_word_sent = True
+                winner_id = event.sender_id
+                if winner_id not in points:
+                    points[winner_id] = 0
+                points[winner_id] += 1
+                sender = await event.get_sender()
+                sender_first_name = sender.first_name if sender else 'مجهول'
+                sorted_points = sorted(points.items(), key=lambda x: x[1], reverse=True)
+                points_text = '\n'.join([f'{i+1}• {(await l313l.get_entity(participant_id)).first_name}: {participant_points}' for i, (participant_id, participant_points) in enumerate(sorted_points)])
+                await l313l.send_message(event.chat_id, f'الف مبرووووك 🎉 الاعب ( {sender_first_name} ) فاز! \n اصبحت نقاطة: {points[winner_id]}\nنقاط المشاركين:\n{points_text}')
 joker = [
     "تلعب وخوش تلعب 👏🏻",
     "لك عاش يابطل استمر 💪🏻",
