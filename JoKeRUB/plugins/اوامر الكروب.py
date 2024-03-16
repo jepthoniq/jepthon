@@ -904,11 +904,6 @@ async def handle_winner(event):
             sorted_points = sorted(points.items(), key=lambda x: x[1], reverse=True)
             points_text = '\n'.join([f'{i+1}• {(await l313l.get_entity(participant_id)).first_name}: {participant_points}' for i, (participant_id, participant_points) in enumerate(sorted_points)])
             await l313l.send_message(event.chat_id, f'الف مبرووووك 🎉 الاعب ( {sender_first_name} ) فاز! \n اصبحت نقاطة: {points[winner_id]}\nنقاط المشاركين:\n{points_text}')
-@l313l.ar_cmd(pattern="تصفير")
-async def Husssein(event):
-    global points
-    points = {}
-    await event.respond('**تم تصفير نقاط المشاركين بنجاح!**')
 
 joker = [
     "تلعب وخوش تلعب 👏🏻",
@@ -923,14 +918,20 @@ original_game_board = [["👊", "👊", "👊", "👊", "👊", "👊"]]
 joker_player = None
 is_game_started2 = False
 
-@l313l.on(events.NewMessage(outgoing=True, pattern=r'\.محيبس'))
 async def handle_clue(event):
     global is_game_started2, correct_answer, game_board, joker_player
     if not is_game_started2:
+        is_game_started2 = False
         is_game_started2 = True
         joker_player = None
         correct_answer = random.randint(1, 6)
         await event.reply(f"**اول من يرسل كلمة (انا) سيشارك في لعبة المحيبس**\n\n{format_board(game_board, numbers_board)}\n**ملاحظة : لفتح العضمة ارسل طك ورقم العضمة لأخذ المحبس أرسل جيب ورقم العضمة **")
+@l313l.on(events.NewMessage(outgoing=True, pattern=r'\.محيبس'))
+async def restart_game(event):
+    global is_game_started2
+    chat_id = event.chat_id
+    is_game_started2 = False
+    await handle_clue(event)
 
 @l313l.on(events.NewMessage(pattern=r'\طك (\d+)'))
 async def handle_strike(event):
@@ -972,7 +973,7 @@ async def handle_guess(event):
 @l313l.on(events.NewMessage(incoming=True))
 async def handle_incoming_message(event):
     global joker_player, is_game_started2
-    if is_game_started2 and event.raw_text.lower() == "انا" and not joker_player:
+    if is_game_started2 and event.raw_text.lower() == "انا" and not joker_player and event.chat_id:
         joker_player = event.sender_id
         await event.reply("تم تسجيل مشاركتك في لعبة المحيبس توكل على الله.")
 
@@ -981,3 +982,8 @@ def format_board(game_board, numbers_board):
     formatted_board += " ".join(numbers_board[0]) + "\n"
     formatted_board += " ".join(game_board[0]) + "\n"
     return formatted_board
+@l313l.ar_cmd(pattern="تصفير")
+async def Husssein(event):
+    global points
+    points = {}
+    await event.respond('**تم تصفير نقاط المشاركين بنجاح!**')
