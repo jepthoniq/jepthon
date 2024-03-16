@@ -59,7 +59,26 @@ BANNED_RIGHTS = ChatBannedRights(
     send_inline=True,
     embed_links=True,
 )
-
+aljoker_Menu = set()
+afk_start_time = datetime.now()
+points = {}
+joker = [
+    "تلعب وخوش تلعب 👏🏻",
+    "لك عاش يابطل استمر 💪🏻",
+    "على كيفك ركزززز انتَ كدها 🤨",
+    "لك وعلي ذيييب 😍",
+]
+is_game_started = False
+is_word_sent = False
+correct_answer = None
+game_board = [["👊", "👊", "👊", "👊", "👊", "👊"]]
+numbers_board = [["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣"]]
+original_game_board = [["👊", "👊", "👊", "👊", "👊", "👊"]]
+joker_player = None
+is_game_started2 = False
+word = ''
+async def get_bot_entity():
+    return await l313l.get_entity('me')
 async def ban_user(chat_id, i, rights):
     try:
         await l313l(functions.channels.EditBannedRequest(chat_id, i, rights))
@@ -824,3 +843,131 @@ async def handle_new_message(event):
         except ChatAdminRequiredError:
             explanation_message = "عذرًا، ليس لدينا الصلاحيات الكافية لتنفيذ هذا الأمر. يرجى من مشرفي المجموعة منحنا صلاحيات مشرف المجموعة."
             await event.reply(explanation_message)
+@l313l.on(events.NewMessage(outgoing=True, pattern=r'\.اسرع (.*)'))
+async def Hussein(event):
+    is_game_started = True
+    is_word_sent = False
+    word = event.pattern_match.group(1)
+    await event.edit(f"**اول من يكتب ( {word} ) سيفوز**")
+
+@l313l.on(events.NewMessage(incoming=True))
+async def Hussein(event):
+    if is_game_started and not is_word_sent and word.lower() in event.raw_text.lower():
+        bot_entity = await get_bot_entity()
+        if bot_entity and event.sender_id != bot_entity.id:
+            is_word_sent = True
+            winner_id = event.sender_id
+            if winner_id not in points:
+                points[winner_id] = 0
+            points[winner_id] += 1
+            sender = await event.get_sender()
+            sender_first_name = sender.first_name if sender else 'مجهول'
+            sorted_points = sorted(points.items(), key=lambda x: x[1], reverse=True)
+            points_text = '\n'.join([f'{i+1}• {(await l313l.get_entity(participant_id)).first_name}: {participant_points}' for i, (participant_id, participant_points) in enumerate(sorted_points)])
+            await l313l.send_message(event.chat_id, f'الف مبرووووك 🎉 الاعب ( {sender_first_name} ) فاز! \n اصبحت نقاطة: {points[winner_id]}\nنقاط المشاركين:\n{points_text}')
+@l313l.on(events.NewMessage)
+async def handle_messages(event):
+    if gvarstatus("5a9_dis"):
+        sender_id = event.sender_id
+        current_user_id = await l313l.get_me()
+        if event.is_private and sender_id != current_user_id.id:
+            await event.delete()
+            if sender_id not in aljoker_Menu:
+                aljoker_time = aljoker_waqt()
+                aljoker_message = gvarstatus("aljoker_message") or f"صاحب الحساب قافل خاصة قبل يلا دعبل"
+                aljoker_url = gvarstatus("aljoker_url") or "https://telegra.ph/file/ee30cda28bd1346e54cb3.jpg"
+                await l313l.send_file(sender_id, aljoker_url, caption=f'**{aljoker_message}**\n**مدة الغياب: {aljoker_time}**')
+                aljoker_Menu.add(sender_id)
+@l313l.ar_cmd(pattern="الخاص تعطيل")
+async def joker5a9(event: Message):
+    global afk_start_time
+    addgvar("5a9_dis", True)
+    afk_start_time = datetime.now()
+    await event.edit('**᯽︙ تم قفل الخاص بنجاح الان لا احد يمكنهُ مراسلتك**')
+@l313l.ar_cmd(pattern="الخاص تفعيل")
+async def joker5a9(event: Message):
+    global afk_start_time
+    delgvar("5a9_dis")
+    afk_start_time = None
+    aljoker_Menu.clear()
+    await event.edit('**᯽︙ تم تفعيل الخاص بنجاح الان يمكنهم مراسلتك**')
+def aljoker_waqt():
+    global afk_start_time
+    if afk_start_time:
+        current_time = datetime.now()
+        duration = current_time - afk_start_time
+        days, seconds = duration.days, duration.seconds
+        hours, remainder = divmod(seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        
+        if days > 0:
+            return f"{days} يوم {hours} ساعة {minutes} دقيقة {seconds} ثانية"
+        elif hours > 0:
+            return f"{hours} ساعة {minutes} دقيقة {seconds} ثانية"
+        else:
+            return f"{minutes} دقيقة {seconds} ثانية" if minutes > 0 else f"{seconds} ثانية"
+    return "N/A"
+
+@l313l.on(events.NewMessage(outgoing=True, pattern=r'\.محيبس'))
+async def handle_clue(event):
+    global is_game_started2, correct_answer, game_board, joker_player
+    if not is_game_started2:
+        is_game_started2 = True
+        joker_player = None
+        correct_answer = random.randint(1, 6)
+        await event.edit(f"**اول من يرسل كلمة (انا) سيشارك في لعبة المحيبس**\n\n{format_board(game_board, numbers_board)}\n**ملاحظة : لفتح العضمة ارسل طك ورقم العضمة لأخذ المحبس أرسل جيب ورقم العضمة **")
+
+@l313l.on(events.NewMessage(pattern=r'\طك (\d+)'))
+async def handle_strike(event):
+    global is_game_started2, correct_answer, game_board, joker_player
+    if is_game_started2 and event.sender_id == joker_player:
+        strike_position = int(event.pattern_match.group(1))
+        if strike_position == correct_answer:
+            game_board = [row[:] for row in original_game_board]
+            await event.reply("** خسرت شبيك مستعجل وجه الچوب 😒**")
+            is_game_started2 = False
+            joker_player = None
+        else:
+            game_board[0][strike_position - 1] = '🖐️'
+            lMl10l = random.choice(joker)
+            await event.reply(f"**{lMl10l}**\n{format_board(game_board, numbers_board)}")
+
+@l313l.on(events.NewMessage(pattern=r'\جيب (\d+)'))
+async def handle_guess(event):
+    global is_game_started2, correct_answer, game_board, joker_player
+    if is_game_started2 and event.sender_id == joker_player:
+        guess = int(event.pattern_match.group(1))
+        if 1 <= guess <= 6:
+            if guess == correct_answer:
+                winner_id = event.sender_id
+                if winner_id not in points:
+                    points[winner_id] = 0
+                points[winner_id] += 1
+                sender = await event.get_sender()
+                sender_first_name = sender.first_name if sender else 'مجهول'
+                sorted_points = sorted(points.items(), key=lambda x: x[1], reverse=True)
+                points_text = '\n'.join([f'{i+1}• {(await l313l.get_entity(participant_id)).first_name}: {participant_points}' for i, (participant_id, participant_points) in enumerate(sorted_points)])
+                game_board = [row[:] for row in original_game_board]
+                await l313l.send_message(event.chat_id, f'الف مبرووووك 🎉 الاعب ( {sender_first_name} ) وجد المحبس 💍! \n اصبحت نقاطة: {points[winner_id]}\nنقاط المشاركين:\n{points_text}')
+            else:
+                game_board = [row[:] for row in original_game_board]
+                await event.reply("**ضاع البات ماضن بعد تلگونة ☹️**")
+            is_game_started2 = False
+            joker_player = None
+@l313l.on(events.NewMessage(incoming=True))
+async def handle_incoming_message(event):
+    global joker_player, is_game_started2
+    if is_game_started2 and event.raw_text.lower() == "انا" and not joker_player:
+        joker_player = event.sender_id
+        await event.reply("تم تسجيل مشاركتك في لعبة المحيبس توكل على الله.")
+
+def format_board(game_board, numbers_board):
+    formatted_board = ""
+    formatted_board += " ".join(numbers_board[0]) + "\n"
+    formatted_board += " ".join(game_board[0]) + "\n"
+    return formatted_board
+@l313l.ar_cmd(pattern="تصفير")
+async def Husssein(event):
+    global points
+    points = {}
+    await event.edit('**تم تصفير نقاط المشاركين بنجاح!**')
