@@ -893,8 +893,7 @@ async def handle_start(event):
 async def handle_winner(event):
     global is_game_started, is_word_sent, winner_id, word, points
     if is_game_started and not is_word_sent and word.lower() in event.raw_text.lower():
-        messi = event.chat_id
-        if event.chat_id == messi:
+        if event.chat_id:
             bot_entity = await get_bot_entity()
             if bot_entity and event.sender_id != bot_entity.id:
                 is_word_sent = True
