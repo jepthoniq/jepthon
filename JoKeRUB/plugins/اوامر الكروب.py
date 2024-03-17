@@ -974,8 +974,8 @@ async def handle_guess(event):
 @l313l.on(events.NewMessage(incoming=True))
 async def handle_incoming_message(event):
     global joker_player, is_game_started2
-    if is_game_started2 and event.raw_text.lower() == "انا" and not joker_player:
-        if event.chat_id:
+    if event.chat_id:
+        if is_game_started2 and event.raw_text.lower() == "انا" and not joker_player:
             joker_player = event.sender_id
             await event.reply("تم تسجيل مشاركتك في لعبة المحيبس توكل على الله.")
 
