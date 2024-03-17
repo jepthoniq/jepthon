@@ -880,7 +880,7 @@ word = ''
 async def get_bot_entity():
     return await l313l.get_entity('me')
 
-@l313l.on(events.NewMessage(outgoing=True, pattern=r'\.اسرع (.*)'))
+@l313l.ar_cmd(pattern="اسرع")
 async def handle_start(event):
     global is_game_started, is_word_sent, word, bot_entity
     is_game_started = True
@@ -927,7 +927,7 @@ async def handle_clue(event):
         joker_player = None
         correct_answer = random.randint(1, 6)
         await event.reply(f"**اول من يرسل كلمة (انا) سيشارك في لعبة المحيبس**\n\n{format_board(game_board, numbers_board)}\n**ملاحظة : لفتح العضمة ارسل طك ورقم العضمة لأخذ المحبس أرسل جيب ورقم العضمة **")
-@l313l.on(events.NewMessage(outgoing=True, pattern=r'\.محيبس'))
+@l313l.ar_cmd(pattern="محيبس")
 async def restart_game(event):
     global is_game_started2
     chat_id = event.chat_id
