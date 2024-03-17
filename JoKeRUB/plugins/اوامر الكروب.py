@@ -885,7 +885,7 @@ async def handle_start(event):
     global is_game_started, is_word_sent, word, bot_entity
     is_game_started = True
     is_word_sent = False
-    word = event.pattern_match.group(1)
+    word = event.text.split(maxsplit=1)[1]
     chat_id = event.chat_id
     await event.edit(f"**اول من يكتب ( {word} ) سيفوز**")
 
