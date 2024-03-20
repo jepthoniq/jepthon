@@ -919,7 +919,6 @@ original_game_board = [["👊", "👊", "👊", "👊", "👊", "👊"]]
 joker_player = None
 is_game_started2 = False
 group_game_status = {}
-points = {}
 
 async def handle_clue(event):
     global group_game_status, correct_answer, game_board
@@ -1009,4 +1008,4 @@ def format_board(game_board, numbers_board):
 async def Husssein(event):
     global points
     points = {}
-    await event.respond('**تم تصفير نقاط المشاركين بنجاح!**')
+    await event.edit('**تم تصفير نقاط المشاركين بنجاح!**')
