@@ -19,7 +19,7 @@ from telethon import events
 c = requests.session()
 bot_username = '@EEObot'
 bot_username2 = '@A_MAN9300BOT'
-bot_username3 = '@MARKTEBOT'
+bot_username3 = '@TTNBOT'
 bot_username4 = '@qweqwe1919bot'
 bot_username5 = '@xnsex21bot'
 bot_username6 = '@DamKombot'
@@ -122,12 +122,12 @@ async def Hussein(event):
     if event.message.message.startswith("تجميع العقاب") and str(event.sender_id) in ConsoleJoker:
         await event.reply("**᯽︙سيتم تجميع النقاط من بوت العقاب , قبل كل شي تأكد من انك قمت بلانظمام الى القنوات الاشتراك الاجباري للبوت لعدم حدوث اخطاء**")
         channel_entity = await l313l.get_entity(bot_username3)
-        await l313l.send_message('@MARKTEBOT', '/start')
+        await l313l.send_message('@TTNBOT', '/start')
         await asyncio.sleep(3)
-        msg0 = await l313l.get_messages('@MARKTEBOT', limit=1)
+        msg0 = await l313l.get_messages('@TTNBOT', limit=1)
         await msg0[0].click(2)
         await asyncio.sleep(3)
-        msg1 = await l313l.get_messages('@MARKTEBOT', limit=1)
+        msg1 = await l313l.get_messages('@TTNBOT', limit=1)
         await msg1[0].click(0)
 
         chs = 1
@@ -146,7 +146,7 @@ async def Hussein(event):
                 except:
                     bott = url.split('/')[-1]
                     await l313l(ImportChatInviteRequest(bott))
-                msg2 = await l313l.get_messages('@MARKTEBOT', limit=1)
+                msg2 = await l313l.get_messages('@TTNBOT', limit=1)
                 await msg2[0].click(text='تحقق')
                 chs += 1
                 await l313l.send_message("me", f"تم الاشتراك في {chs} قناة")
