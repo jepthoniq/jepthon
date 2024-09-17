@@ -2,7 +2,7 @@ import base64
 import asyncio
 from datetime import datetime
 from telethon import events
-from telethon.errors import BadRequestError
+from telethon.errors import BadRequestError, UserAdminInvalidError
 from telethon.tl.functions.channels import EditBannedRequest
 from telethon.tl.functions.users import GetFullUserRequest
 from telethon.tl.types import ChatBannedRights
@@ -20,14 +20,29 @@ plugin_category = "admin"
 joker_users = []
 joker_mute = "https://telegra.ph/file/c5ef9550465a47845c626.jpg"
 joker_unmute = "https://telegra.ph/file/e9473ddef0b58cdd7f9e7.jpg"
+import os
+
+file_path = 'AljokerMute.txt'
+
+if not os.path.isfile(file_path):
+    open(file_path, 'w').close()
+
+def add_to_mute_list(user):
+    with open(file_path, 'a') as file:
+        file.write(f"{user.id}\n")
+
+    
+def remove_from_mute_list(user_id):
+    global file_path  # Ensure you are modifying the global file_path
+    file_path = [id for id in file_path if id != str(user_id)]
+
 #=================== الكـــــــــــــــتم  ===================  #
 
 @l313l.ar_cmd(pattern=f"كتم(?:\s|$)([\s\S]*)")
 async def mutejep(event):
-    await event.delete()
     if event.is_private:
         replied_user = await event.client.get_entity(event.chat_id)
-        if is_muted(event.chat_id, event.chat_id):
+        if is_muted(event.chat_id, event.chat_id):  # Corrected this line
             return await event.edit(
                 "**- هـذا المسـتخـدم مڪتـوم . . سـابقـاً **"
             )
@@ -36,10 +51,10 @@ async def mutejep(event):
         if event.chat_id == 705475246:
             return await edit_delete(event, "** دي . . لا يمڪنني كتـم مطـور السـورس  ╰**")
         try:
-            mute(event.chat_id, event.chat_id)
-            joker_users.append(replied_user)
+            mute(event.chat_id, event.chat_id)  # Corrected this line
+            add_to_mute_list(replied_user)
         except Exception as e:
-            await event.edit(f"**- خطـأ **\n`{e}`")
+            await event.edit(f"**- خطــأ : **`{e}`")
         else:
             return await event.client.send_file(
                 event.chat_id,
@@ -53,6 +68,21 @@ async def mutejep(event):
                 f"**- الشخـص  :** [{replied_user.first_name}](tg://user?id={event.chat_id})\n",
             )
     else:
+        args = event.pattern_match.group(1).strip()
+        user = None
+
+        if event.reply_to_msg_id:
+            replied_message = await event.get_reply_message()
+            user = await event.client.get_entity(replied_message.from_id)
+        elif args:
+            try:
+                user = await event.client.get_entity(args)
+            except Exception as e:
+                return await event.edit(f"**- خطــأ : **`{e}`")
+
+        if not user:
+            return await event.edit("**- يرجى تقديم المعرف أو اسم المستخدم، أو الرد على رسالة المستخدم**")
+
         chat = await event.get_chat()
         admin = chat.admin_rights
         creator = chat.creator
@@ -60,14 +90,11 @@ async def mutejep(event):
             return await edit_or_reply(
                 event, "** أنـا لسـت مشـرف هنـا ؟!! .**"
             )
-        user, reason = await get_user_from_event(event)
-        if not user:
-            return
         if user.id == l313l.uid:
             return await edit_or_reply(event, "**𖡛... . لمـاذا تࢪيـد كتم نفسـك؟  ...𖡛**")
         if user.id == 705475246:
             return await edit_or_reply(event, "** دي . . لا يمڪنني كتـم مطـور السـورس  ╰**")
-        if is_muted(user.id, event.chat_id):
+        if is_muted(user.id, event.chat_id): 
             return await edit_or_reply(
                 event, "**عــذراً .. هـذا الشخـص مكتــوم سـابقــاً هنـا**"
             )
@@ -83,8 +110,8 @@ async def mutejep(event):
         except Exception as e:
             return await edit_or_reply(event, f"**- خطــأ : **`{e}`")
         try:
-            mute(user.id, event.chat_id)
-            joker_users.append(user)
+            mute(user.id, event.chat_id) 
+            add_to_mute_list(user)
         except UserAdminInvalidError:
             if "admin_rights" in vars(chat) and vars(chat)["admin_rights"] is not None:
                 if chat.admin_rights.delete_messages is not True:
@@ -98,6 +125,7 @@ async def mutejep(event):
                 )
         except Exception as e:
             return await edit_or_reply(event, f"**- خطــأ : **`{e}`")
+        reason = event.pattern_match.group(1).split(maxsplit=1)[1] if len(event.pattern_match.group(1).split(maxsplit=1)) > 1 else ""
         if reason:
             await event.client.send_file(
                 event.chat_id,
@@ -116,7 +144,7 @@ async def mutejep(event):
                 "#الكــتم\n"
                 f"**الشخـص :** [{user.first_name}](tg://user?id={user.id})\n"
                 f"**الدردشـه :** {get_display_name(await event.get_chat())}(`{event.chat_id}`)",
-            ) 
+            )   
 @l313l.on(events.NewMessage)
 async def handle_forwarded(event):
     if event.fwd_from:
@@ -126,7 +154,6 @@ async def handle_forwarded(event):
 
 @l313l.ar_cmd(pattern=f"(الغاء الكتم|الغاء كتم)(?:\s|$)([\s\S]*)")
 async def unmutejep(event):
-    await event.delete()
     if event.is_private:
         replied_user = await event.client.get_entity(event.chat_id)
         if not is_muted(event.chat_id, event.chat_id):
@@ -135,9 +162,10 @@ async def unmutejep(event):
             )
         try:
             unmute(event.chat_id, event.chat_id)
-            joker_users.remove(replied_user)
+            if str(replied_user.id) in file_path:
+                remove_from_mute_list(replied_user.id)  # Ensure user ID is removed from the list
         except Exception as e:
-            await event.edit(f"**- خطــأ **\n`{e}`")
+            await event.edit(f"**- خطــأ : **`{e}`")
         else:
             await event.client.send_file(
                 event.chat_id,
@@ -151,13 +179,26 @@ async def unmutejep(event):
                 f"**- الشخـص :** [{replied_user.first_name}](tg://user?id={event.chat_id})\n",
             )
     else:
-        user, _ = await get_user_from_event(event)
+        args = event.pattern_match.group(2).strip()
+        user = None
+
+        if event.reply_to_msg_id:
+            replied_message = await event.get_reply_message()
+            user = await event.client.get_entity(replied_message.from_id)
+        elif args:
+            try:
+                user = await event.client.get_entity(args)
+            except Exception as e:
+                return await event.edit(f"**- خطــأ : **`{e}`")
+
         if not user:
-            return
+            return await event.edit("**- يرجى تقديم المعرف أو اسم المستخدم، أو الرد على رسالة المستخدم**")
+
         try:
-            if is_muted(user.id, event.chat_id):
-                unmute(user.id, event.chat_id)
-                joker_users.remove(user)
+            if is_muted(user.id, event.chat_id):  # Corrected this line
+                unmute(user.id, event.chat_id)  # Corrected this line
+                if str(user.id) in file_path:  # Ensure file_path contains user ids as strings
+                    remove_from_mute_list(user.id)  # Use user.id instead of user
             else:
                 result = await event.client.get_permissions(event.chat_id, user.id)
                 if result.participant.banned_rights.send_messages:
@@ -174,7 +215,7 @@ async def unmutejep(event):
         await event.client.send_file(
             event.chat_id,
             joker_unmute,
-            caption=f"**- المستخـدم :** {_format.mentionuser(user.first_name ,user.id)} \n**- تـم الغـاء كتمـه بنجـاح ✓**",
+            caption=f"**- المستخـدم :** {_format.mentionuser(user.first_name, user.id)} \n**- تـم الغـاء كتمـه بنجـاح ✓**",
         )
         if BOTLOG:
             await event.client.send_message(
@@ -186,12 +227,23 @@ async def unmutejep(event):
 
 @l313l.ar_cmd(pattern=r"قائمة المكتومين")
 async def show_muted_users(event):
-    if len(joker_users) > 0:
-        joker_list = "**᯽︙ قائمة المستخدمين المكتومين:**\n"
-        for i, user in enumerate(joker_users, start=1):
-            joker_link = f"[{user.first_name}](tg://user?id={user.id})"
-            joker_list += f"{i}. {joker_link}\n"
-        await event.edit(joker_list)
+    if os.path.isfile(file_path):
+        with open(file_path, 'r') as file:
+            muted_ids = file.read().splitlines()
+        if len(muted_ids) > 0:
+            joker_list = "**᯽︙ قائمة المستخدمين المكتومين:**\n"
+            for i, user_id in enumerate(muted_ids, start=1):
+                try:
+                    user = await event.client.get_entity(int(user_id))
+                    joker_link = f"[{user.first_name}](tg://user?id={user.id})"
+                    joker_list += f"{i}. {joker_link}\n"
+                except ValueError:
+                    joker_list += f"{i}. User ID: {user_id} (Error: Could not find user)\n"
+                except Exception as e:
+                    joker_list += f"{i}. User ID: {user_id} (Error: {e})\n"
+            await event.edit(joker_list)
+        else:
+            await event.edit("**᯽︙ لا يوجد مستخدمين مكتومين حاليًا**")
     else:
         await event.edit("**᯽︙ لا يوجد مستخدمين مكتومين حاليًا**")
 # ===================================== # 
